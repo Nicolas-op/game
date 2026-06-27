@@ -1,5 +1,6 @@
 import pygame
 
+from code.Const import WIN_WIDTH, WIN_HEIGHT
 from code.Menu import Menu
 
 
@@ -7,11 +8,10 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.window = pygame.display.set_mode(size=(600, 400))
+        self.window = pygame.display.set_mode(size=(WIN_WIDTH, WIN_HEIGHT)) # ajustar tamanho da imagem
 
     def run(self):
-
-        while True:
+       while True:
             menu= Menu(self.window)
             menu.run()
             pass
@@ -20,9 +20,3 @@ class Game:
 
 
 
-            # check for all events
-            # for event in pygame.event.get():
-            #     if event.type == pygame.QUIT:
-            #         print('Quitting...')
-            #         pygame.quit()  # Close window
-            #         quit()  # end pygame
