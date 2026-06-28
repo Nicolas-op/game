@@ -4,6 +4,8 @@ COLOR_ORANGE =(255, 128, 0) #alterar as cores
 COLOR_WHITE = (255,255,255)
 COLOR_YELLOW = (255,255,0)
 
+Cactus_HEIGHT = 32
+
 
 
 ENTITY_SPEED = {
@@ -28,7 +30,7 @@ MENU_OPTION = ( ' NEW GAME 1P',
                  'EXIT')
 
 #P
-PLAYER_HEIGHT = 48
+PLAYER_HEIGHT = 37
 
 
 #W

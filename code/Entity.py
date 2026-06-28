@@ -8,7 +8,6 @@ class Entity(ABC):
     def __init__(self, name: str, position: tuple):
         self.name = name
         self.surf = pygame.image.load('./asset/' + name + '.png').convert_alpha()
-        #self.surf = pygame.transform.scale(self.surf, (800, 450))
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
 
@@ -16,3 +15,6 @@ class Entity(ABC):
 
     def move(self, ):
         pass
+
+    def update(self, ):
+        self.move()

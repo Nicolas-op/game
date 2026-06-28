@@ -1,5 +1,6 @@
 from code.Background import Background
-from code.Const import WIN_WIDTH, WIN_HEIGHT, GROUND_Y, PLAYER_HEIGHT
+from code.Const import WIN_WIDTH, WIN_HEIGHT, GROUND_Y, PLAYER_HEIGHT, Cactus_HEIGHT
+from code.Obstacle import Obstacle
 from code.Player import Player
 
 
@@ -18,3 +19,6 @@ class EntityFactory:
 
             case 'Player1':
                 return Player('Player1', ( 30, GROUND_Y - PLAYER_HEIGHT ))
+
+            case 'Cactus':
+                return Obstacle('Cactus', (WIN_WIDTH + 20, GROUND_Y - Cactus_HEIGHT))
