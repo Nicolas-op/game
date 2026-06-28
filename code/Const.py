@@ -14,6 +14,12 @@ ENTITY_SPEED = {
     'Level1Bg4': 1,
 
 }
+
+
+#G
+
+GROUND_Y = 280
+
 # M
 MENU_OPTION = ( ' NEW GAME 1P',
                  'NEW GAME 2P - COOPERATIVE',
@@ -21,7 +27,10 @@ MENU_OPTION = ( ' NEW GAME 1P',
                  'SCORE',
                  'EXIT')
 
+#P
+PLAYER_HEIGHT = 48
+
 
 #W
-WIN_WIDTH =  800  #1.536
-WIN_HEIGHT = 450  #1.024
+WIN_WIDTH =  576
+WIN_HEIGHT = 324
