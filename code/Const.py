@@ -1,10 +1,11 @@
 
 #c
-COLOR_ORANGE =(255, 128, 0) #alterar as cores
+COLOR_ORANGE =(255, 128, 0)
 COLOR_WHITE = (255,255,255)
 COLOR_YELLOW = (255,255,0)
+COLOR_BLACK = (0,0,0)
 
-Cactus_HEIGHT = 32
+CACTUS_HEIGHT = 32
 
 
 
@@ -24,7 +25,7 @@ GROUND_Y = 280
 
 # M
 MENU_OPTION = ( ' NEW GAME 1P',
-                 'SCORE',
+                 'HIGH SCORE',
                  'EXIT')
 
 #P

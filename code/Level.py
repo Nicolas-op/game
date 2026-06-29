@@ -2,9 +2,8 @@ import sys
 
 import pygame
 from pygame import Font, Surface, Rect
-from pygame.examples.aliens import Score
 
-from code.Const import COLOR_WHITE, WIN_HEIGHT, WIN_WIDTH, COLOR_ORANGE, MENU_OPTION
+from code.Const import COLOR_WHITE, WIN_HEIGHT, WIN_WIDTH, COLOR_ORANGE, COLOR_BLACK
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
 from code.Obstacle import Obstacle
@@ -22,17 +21,13 @@ class Level:
         self.entity_list.append(self.player)
         self.cactus = EntityFactory.get_entity('Cactus')
         self.entity_list.append(self.cactus)
-        self.timeout = 20000  # 20 segundos
         self.spawn_timer = 0
-        self.score  = 0
+        self.score = 0
         self.last_score_update = pygame.time.get_ticks()
         self.next_difficulty = 50
         self.game_speed = 5
         self.game_over = False
         self.high_score = self.load_high_score()
-
-
-
 
     def run(self, ):
         pygame.mixer_music.load(f'./asset/{self.name}.mp3')
@@ -42,7 +37,7 @@ class Level:
             clock.tick(60)
 
             if self.handle_events():
-               return
+                return
 
             self.update()
             self.draw(clock)
@@ -63,7 +58,7 @@ class Level:
                     self.player.jump()
 
                 if self.game_over and event.key == pygame.K_RETURN:
-                        return True
+                    return True
 
         return False
 
@@ -74,25 +69,23 @@ class Level:
         for ent in self.entity_list:
             ent.update()
 
-
         self.update_score()
         self.update_difficulty()
         self.check_collision()
         self.spawn_obstacles()
 
-
-
-
     def check_collision(self):
         for ent in self.entity_list:
             if isinstance(ent, Obstacle):
                 if not ent.active:
-
                     continue
 
                 if self.player.rect.colliderect(ent.rect):
                     self.game_over = True
 
+                    if self.score > self.high_score:
+                        self.high_score = self.score
+                        self.save_high_score()
 
     def spawn_obstacles(self):
 
@@ -101,19 +94,16 @@ class Level:
 
         self.spawn_timer += 1
         if self.spawn_timer >= 120:
-
-            self.cactus.rect.left = WIN_WIDTH +50
+            self.cactus.rect.left = WIN_WIDTH + 50
             self.cactus.active = True
             self.spawn_timer = 0
-
 
     def update_score(self):
         current_time = pygame.time.get_ticks()
 
-        if current_time -  self.last_score_update >= 100:
+        if current_time - self.last_score_update >= 100:
             self.score += 1
             self.last_score_update = current_time
-
 
     def update_difficulty(self):
 
@@ -122,43 +112,44 @@ class Level:
 
             for ent in self.entity_list:
                 if isinstance(ent, Obstacle):
-                   ent.speed = self.game_speed
+                    ent.speed = self.game_speed
 
-            self.next_difficulty +=50
-
+            self.next_difficulty += 50
 
     def load_high_score(self):
-        return
+        try:
+            with open('highscore.txt', 'r') as file:
+                return int(file.read())
 
+        except:
+            return 0
 
+    def save_high_score(self):
+        try:
+            with open('highscore.txt', 'w') as file:
+                file.write(str(self.high_score))
 
-
-
-
-
-
-
+        except:
+            pass
 
     def draw(self, clock):
 
-        self.window.fill((0, 0, 0))
+        self.window.fill(COLOR_BLACK)
 
         for ent in self.entity_list:
             if hasattr(ent, 'active') and not ent.active:
                 continue
             self.window.blit(source=ent.surf, dest=ent.rect)
 
-
         self.level_text(14, f'Score: {self.score}', COLOR_WHITE, (450, 10))
-        self.level_text(14, f' {self.name} - Timeout: {self.timeout / 1000 :.1f}s', COLOR_WHITE, (10, 5))
         self.level_text(14, f'{clock.get_fps() :.0f}', COLOR_WHITE, (10, WIN_HEIGHT - 35))
         self.level_text(14, f'entidades: {len(self.entity_list)}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
 
-
         if self.game_over:
-            self.level_text(30,'GAME OVER', COLOR_WHITE,(200,120))
+            self.level_text(30, 'GAME OVER', COLOR_ORANGE, (200, 120))
             self.level_text(30, f'Score Final: {self.score}', COLOR_ORANGE, (200, 150))
-            self.level_text(20, 'Pressione ENTER para voltar ao menu', COLOR_ORANGE, (200, 180))
+            self.level_text(30, 'Pressione ENTER para voltar ao menu', COLOR_ORANGE, (10, 180))
+            self.level_text(30, f"High Score: {self.high_score}", COLOR_ORANGE, (200, 210))
         pygame.display.flip()
 
     def level_text(self, text_size: int, text: str, text_color: tuple, text_pos: tuple):
@@ -166,5 +157,3 @@ class Level:
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
         text_rect: Rect = text_surf.get_rect(left=text_pos[0], top=text_pos[1])
         self.window.blit(source=text_surf, dest=text_rect)
-
-

@@ -15,20 +15,25 @@ class Menu:
          self.surf = pygame.image.load('./asset/MenuBg.png').convert_alpha() #Carregar imagem menu
          self.rect = self.surf.get_rect(left=0, top=0) #retangulo
 
+
     def run(self):
+        self.high_score = self.load_high_score()
         menu_option = 0
         pygame.mixer_music.load('./asset/Menu.mp3') #Adicionar musica ao menu
         pygame.mixer_music.play(-1)
         while True:
-            # DRAW IMAGES
-            self.window.blit(source=self.surf, dest=self.rect) #desenha fundo
+
+            self.window.blit(source=self.surf, dest=self.rect)
             self.menu_text(50, "CAT", COLOR_ORANGE, ((WIN_WIDTH / 2), 70))
             self.menu_text(50, "RUNNER", COLOR_ORANGE, ((WIN_WIDTH / 2), 120))
             for i in range(len(MENU_OPTION)):
+
                 if i == menu_option:
                    self.menu_text(20, MENU_OPTION[i], COLOR_YELLOW, ((WIN_WIDTH / 2), 200 + 25 * i))
                 else:
                    self.menu_text(20, MENU_OPTION[i], COLOR_WHITE, ((WIN_WIDTH / 2), 200 + 25 * i))
+            if MENU_OPTION[menu_option] == 'HIGH SCORE':
+                self.menu_text(20, f'High_score: {self.high_score}', COLOR_WHITE, ((WIN_WIDTH / 2), 290))
             pygame.display.flip()
 
             # Check for all events
@@ -55,3 +60,12 @@ class Menu:
         text_surf: Surface = text_font.render(text, True, text_color).convert_alpha()
         text_rect: Rect = text_surf.get_rect(center=text_center_pos)
         self.window.blit(source=text_surf, dest=text_rect)
+
+
+    def load_high_score(self):
+        try:
+            with open('highscore.txt', 'r') as file:
+                return int(file.read())
+
+        except:
+            return 0
